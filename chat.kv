@@ -1,0 +1,112 @@
+#:kivy 2.0.0
+#:import hex kivy.utils.get_color_from_hex
+#:import Window kivy.core.window.Window
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+
+#User Response Card Design
+<User>:
+    size_hint_y: None
+    height: user.height
+    size_hint_x: 0.4
+    adaptive_height: True
+    pos_hint: {'center_x': 0.8}
+
+    canvas.before:
+        Color:
+            rgba: 55/255, 66/255, 111/255, 1
+        Line:
+            width: 2  
+            rounded_rectangle: self.x, self.y, self.width, self.height, 17
+        Color:
+            rgba: 1, 1, 1, 1  
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [25]
+
+    MDScreen:
+        radius: dp(25)
+        MDLabel:
+            id: user
+            text: root.text
+            color: 55/255, 66/255, 111/255, 1
+            font_size: root.font_size
+            valign: "middle"
+            halign: 'right'       
+            padding: [15, 15]    
+            size_hint_y: None
+            height: self.texture_size[1] + 2*self.padding[1]
+
+#Bot Response Card Design            
+<Response>:
+    size_hint_y: None
+    height: bot.height
+    size_hint_x: 0.4
+    adaptive_height:True
+    pos_hint: {'center_x': 0.2}
+    MDScreen:
+        md_bg_color: get_color_from_hex("#7099d7")
+        radius: dp(25)
+        
+        MDLabel:
+            id: bot
+            text: root.text
+            color: 1,1,1,1 
+            font_size:dp(16)
+            valign: "middle"
+            halign: 'left'
+            padding: [15, 15]
+            size_hint_y: None
+            height: self.texture_size[1] + 2*self.padding[1]
+
+#The Whole Ass Screen Design   
+<ChatScreen>:
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing:dp(20)
+        md_bg_color: get_color_from_hex("#fefefe")
+
+        MDBoxLayout:
+            size_hint_y: None
+            height: dp(56)  
+            padding: dp(16)  
+
+            MDLabel:
+                text: "FalconBot"
+                color: 55/255, 66/255, 111/255, 1
+                font_style: "H6"  
+                halign: "left"  
+                valign: "middle"
+        
+        ScrollView:
+            MDBoxLayout:              
+                id: chat_area
+                adaptive_height:True
+                orientation: 'vertical'
+                padding:dp(20)
+                spacing:dp(12)
+                
+        MDBoxLayout:
+            size_hint_y: None
+            height: 50
+            padding: dp(40)
+            spacing: dp(10)
+
+            MDTextField:
+                id: message
+                hint_text: "Type here..."
+                font_style: "Caption"
+                font_size: dp(16)
+                multiline: False
+                mode: "round"
+                max_text_length: 150
+                helper_text: "Message"
+                size_hint_x: 0.85
+                text_color_focus: 55/255, 66/255, 111/255, 1
+
+            MDFillRoundFlatIconButton:
+                text: "Send"
+                icon: "send"
+                md_bg_color: get_color_from_hex("#37426F")
+                on_press: root.send_message()
+                size_hint_x: 0.15
