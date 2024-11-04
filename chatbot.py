@@ -1,10 +1,7 @@
 import os
-import torch
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 from sentence_transformers import SentenceTransformer
 from pinecone import Pinecone
-
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 # Initialize Pinecone instance
 pc = Pinecone(api_key='89eeb534-da10-4068-92f7-12eddeabe1e5')
@@ -16,7 +13,7 @@ index = pc.Index(index_name)
 def load_models():
     retriever = SentenceTransformer("flax-sentence-embeddings/all_datasets_v3_mpnet-base")
     tokenizer = T5Tokenizer.from_pretrained('t5-base')
-    generator = T5ForConditionalGeneration.from_pretrained('t5-base').to(device)
+    generator = T5ForConditionalGeneration.from_pretrained('t5-base')
     return retriever, generator, tokenizer
 
 retriever, generator, tokenizer = load_models()
@@ -39,7 +36,7 @@ def generate_answer_t5(query, context):
     if output_text.lower() == "none":
         return "The topic is not covered in the student manual."
 
-    inputs = tokenizer.encode(query, return_tensors="pt", max_length=512, truncation=True).to(device)
+    inputs = tokenizer.encode(query, return_tensors="pt", max_length=512, truncation=True)
     ids = generator.generate(inputs, num_beams=4, min_length=10, max_length=60, repetition_penalty=1.2)
     answer = tokenizer.decode(ids[0], skip_special_tokens=True, clean_up_tokenization_spaces=False)
     return answer
