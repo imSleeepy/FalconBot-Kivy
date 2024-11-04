@@ -2,7 +2,7 @@ from kivymd.app import MDApp
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivymd.uix.card import MDCard
 from kivy.properties import ObjectProperty, StringProperty, NumericProperty
-#from chatbot import query_pinecone, generate_answer_t5, format_query_t5
+from chatbot import query_pinecone, generate_answer_t5, format_query_t5
 
 class User(MDCard):
     text = StringProperty()
@@ -34,15 +34,15 @@ class ChatScreen(Screen):
             )
             self.ids.message.text = ""  
 
-#            # Fetch bot response
-#            result = query_pinecone(user_input)
-#            formatted_query = format_query_t5(user_input, result["matches"])
-#            bot_response = generate_answer_t5(formatted_query, result["matches"])
-#
-#            # Display bot response
-#            self.ids.chat_area.add_widget(
-#                Response(text= bot_response, font_size=17)
-#            )
+            # Fetch bot response
+            result = query_pinecone(user_input)
+            formatted_query = format_query_t5(user_input, result["matches"])
+            bot_response = generate_answer_t5(formatted_query, result["matches"])
+
+            # Display bot response
+            self.ids.chat_area.add_widget(
+                Response(text= bot_response, font_size=17)
+            )
 
 class ChatApp(MDApp):
     def build(self):
