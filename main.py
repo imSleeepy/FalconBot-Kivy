@@ -1,7 +1,6 @@
 from kivymd.app import MDApp
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivymd.uix.card import MDCard
-from kivymd.uix.button import MDFillRoundFlatIconButton
 from kivy.properties import ObjectProperty, StringProperty, NumericProperty
 #from chatbot import query_pinecone, generate_answer_t5, format_query_t5
 
