@@ -30,7 +30,7 @@
             id: user
             text: root.text
             color: 55/255, 66/255, 111/255, 1
-            font_size: dp(16)
+            font_size: dp(25)
             valign: "middle"
             halign: 'right'       
             padding: [15, 15]    
@@ -52,7 +52,7 @@
             id: bot
             text: root.text
             color: 1,1,1,1 
-            font_size:dp(16)
+            font_size:dp(25)
             valign: "middle"
             halign: 'left'
             padding: [15, 15]
@@ -66,22 +66,19 @@
         spacing:dp(20)
         md_bg_color: get_color_from_hex("#fefefe")
 
-        FloatLayout:
+        MDBoxLayout:
+            pos_hint: {'x': 0, 'top': 1}
             size_hint_y: None
-            height: dp(30)  
-            MDBoxLayout:
-                pos_hint: {'x': 0, 'top': 1}
-                size_hint_y: None
-                height: dp(40)  
-                padding: dp(16)  
-                
-                MDLabel:
-                    markup: True
-                    text: "[b]FalconBot[/b]"
-                    font_size: dp(24)
-                    color: 55/255, 66/255, 111/255, 1
-                    halign: "left"  
-                    valign: "middle"
+            height: dp(40)  
+            padding: dp(16)  
+            
+            MDLabel:
+                markup: True
+                text: "[b]FalconBot[/b]"
+                font_size: dp(34)
+                color: 55/255, 66/255, 111/255, 1
+                halign: "left"  
+                valign: "middle"
         
         ScrollView:
             MDBoxLayout:              
@@ -92,6 +89,7 @@
                 spacing:dp(12)
                 
         MDBoxLayout:
+            orientation: "horizontal"
             padding: dp(23)
             spacing: dp(10)
             size_hint_y: None 
@@ -100,7 +98,7 @@
             TextInput:
                 id: message
                 hint_text: "Type here..."
-                font_size: dp(16)
+                font_size: dp(25)
                 multiline: False
                 size_hint_y: None 
                 height: dp(38)         
@@ -113,4 +111,3 @@
                 size_hint_y: None  
                 width: dp(70)
                 height: dp(38)     
-                pos_hint: {'center_y': 2.2}  
