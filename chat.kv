@@ -30,7 +30,7 @@
             id: user
             text: root.text
             color: 55/255, 66/255, 111/255, 1
-            font_size: dp(25)
+            font_size: dp(15)
             valign: "middle"
             halign: 'right'       
             padding: [15, 15]    
@@ -52,7 +52,7 @@
             id: bot
             text: root.text
             color: 1,1,1,1 
-            font_size:dp(25)
+            font_size:dp(15)
             valign: "middle"
             halign: 'left'
             padding: [15, 15]
@@ -75,7 +75,7 @@
             MDLabel:
                 markup: True
                 text: "[b]FalconBot[/b]"
-                font_size: dp(34)
+                font_size: dp(24)
                 color: 55/255, 66/255, 111/255, 1
                 halign: "left"  
                 valign: "middle"
@@ -98,7 +98,7 @@
             TextInput:
                 id: message
                 hint_text: "Type here..."
-                font_size: dp(25)
+                font_size: dp(15)
                 multiline: False
                 size_hint_y: None 
                 height: dp(38)         
@@ -106,8 +106,9 @@
 
             Button:
                 text: "Send"
-                on_press: root.send_message()
+                on_press: root.show_user_input()
+                on_release: root.process_bot_response()
                 size_hint_x: None
                 size_hint_y: None  
                 width: dp(70)
-                height: dp(38)     
+                height: dp(38)
