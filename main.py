@@ -2,8 +2,7 @@ from kivymd.app import MDApp
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivymd.uix.card import MDCard
 from kivy.properties import ObjectProperty, StringProperty, NumericProperty
-#from chatbot import query_pinecone, generate_answer_t5, format_query_t5
-
+import requests  # Import the requests module
 from kivy.core.window import Window
 Window.keyboard_anim_args = {'d': .2, 't': 'in_out_expo'}
 Window.softinput_mode = "below_target"
@@ -26,29 +25,43 @@ class ChatScreen(Screen):
 
     def welcome_message(self):
         self.ids.chat_area.add_widget(
-            Response(text= "Hey Klasmeyt, I'm here to help you about the student manual!", font_size=17)
+            Response(text="Hey Klasmeyt, I'm here to help you about the student manual!", font_size=17)
         )
 
-    def send_message(self):
+    def show_user_input(self):
         user_input = self.ids.message.text
         if user_input:
-            # Display user message
+            # Display user message instantly on button press
             self.ids.chat_area.add_widget(
-                User(text= user_input, font_size=17)
+                User(text=user_input, font_size=17)
             )
+            # Clear the input field
             self.ids.message.text = ""  
 
-#            # Fetch bot response
-#            result = query_pinecone(user_input)
-#            formatted_query = format_query_t5(user_input, result["matches"])
-#            bot_response = generate_answer_t5(formatted_query, result["matches"])
-#
-#            # Display bot response
-#            self.ids.chat_area.add_widget(
-#                Response(text= bot_response, font_size=17)
-#            )
+    def process_bot_response(self):
+        user_input = self.ids.chat_area.children[0].text
 
-class ChatApp(MDApp):
+        # Call the Azure server to get the response based on the user input
+        bot_response = self.get_bot_response(user_input)
+
+        # Display bot response on button release
+        self.ids.chat_area.add_widget(
+            Response(text=bot_response, font_size=17)
+        )
+
+    def get_bot_response(self, user_input):
+        """Send the user input to the chatbot API and get the response."""
+        url = "http://52.184.84.224:5000/get_response"  # The endpoint of your chatbot API on Azure
+        try:
+            response = requests.post(url, json={"query": user_input})
+            if response.status_code == 200:
+                return response.json().get("response", "Sorry, I couldn't get an answer.")
+            else:
+                return "Error: Unable to connect to the server."
+        except requests.exceptions.RequestException as e:
+            return f"Error: {str(e)}"
+
+class ChatApp(MDApp):   
     def build(self):
         sm = ScreenManager()
         sm.add_widget(ChatScreen(name='chat'))
