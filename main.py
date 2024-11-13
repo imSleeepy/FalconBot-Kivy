@@ -26,11 +26,19 @@ class Suggestion(Button):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.halign = 'center'
-        self.valign = 'middle'
-        self.font_size = '13sp'
-        self.background_normal = '' 
-        self.background_color = (122/255, 153/255, 215/255, 1) 
+        self.size_hint_y = None
+        self.height = 50
+        self.size_hint_x = None  # Disable auto-resizing for width
+        self.padding = (10, 5)  # Add padding to left/right (10) and top/bottom (5)
+        self.border = (0, 0, 0, 0)
+        self.font_size = '15sp'
+
+        # Bind text changes to recalculate width based on content
+        self.bind(texture_size=self.update_width)
+
+    def update_width(self, *args):
+        # Adjust width based on the text size plus padding
+        self.width = self.texture_size[0] + self.padding[0] * 2
 
 def list_suggestions():
     return [
@@ -258,7 +266,6 @@ class ChatScreen(Screen):
             self.ids.chat_area.add_widget(User(text=user_input, font_size=17))
             self.ids.message.text = ""  # Clear the input field
             
-            
             Clock.schedule_once(lambda dt: self.rule_based_response(user_input), 0.3)
 
     def rule_based_response(self, user_input):
@@ -293,6 +300,8 @@ class ChatScreen(Screen):
         else:
             # Call main bot response if no rule-based response is found
             self.process_bot_response(user_input)
+
+        self.ids.chat_area.parent.scroll_to(self.ids.chat_area.children[0])
             
     def process_bot_response(self, user_input):
         # Call chatbot.py to get the response based on the user input
