@@ -79,7 +79,19 @@
                 color: 55/255, 66/255, 111/255, 1
                 halign: "left"  
                 valign: "middle"
-        
+
+            Button:
+                text: "Reset"
+                md_bg_color: get_color_from_hex("#37426F")
+                theme_text_color: "Custom"
+                text_color: (1, 1, 1, 1)
+                size_hint: None, None
+                width: dp(90)  
+                height: dp(40)  
+                pos_hint: {'right': 1, 'top': 1}
+                padding: [dp(8), dp(6)]
+                on_release: root.reset_chat()
+   
         ScrollView:
             MDBoxLayout:              
                 id: chat_area
@@ -107,8 +119,9 @@
             Button:
                 text: "Send"
                 on_press: root.show_user_input()
-                on_release: root.process_bot_response()
                 size_hint_x: None
                 size_hint_y: None  
                 width: dp(70)
-                height: dp(38)
+                height: dp(38) 
+
+            
