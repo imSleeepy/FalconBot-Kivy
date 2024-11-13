@@ -26,13 +26,9 @@ class Suggestion(Button):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.size_hint_x = None
-        self.size_hint_y = None
-        self.text_size = (290, 40)
         self.halign = 'center'
         self.valign = 'middle'
-        self.width = dp(300)
-        self.height = dp(50)
+        self.font_size = '13sp'
         self.background_normal = '' 
         self.background_color = (122/255, 153/255, 215/255, 1) 
 
