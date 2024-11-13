@@ -2,12 +2,12 @@ from kivymd.app import MDApp
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivymd.uix.card import MDCard
 from kivy.clock import Clock
-from kivymd.uix.button import MDFlatButton
+from kivy.metrics import dp
+from kivy.uix.button import Button
 import random
 from kivy.utils import get_color_from_hex
 from kivy.properties import ObjectProperty, StringProperty, NumericProperty
-#from chatbot import process_query  # Import the new function
-import requests  # Import the requests module
+import requests 
 
 from kivy.core.window import Window
 Window.keyboard_anim_args = {'d': .2, 't': 'in_out_expo'}
@@ -21,8 +21,19 @@ class Response(MDCard):
     text = StringProperty()
     font_size = NumericProperty()
 
-class Suggestion(MDFlatButton):
+class Suggestion(Button):
     text = StringProperty()
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.size_hint_x = None
+        self.size_hint_y = None
+        self.text_size = (290, 40)
+        self.halign = 'center'
+        self.valign = 'middle'
+        self.width = dp(300)
+        self.background_normal = '' 
+        self.background_color = (122/255, 153/255, 215/255, 1) 
 
 def list_suggestions():
     return [
