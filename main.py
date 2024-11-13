@@ -32,6 +32,7 @@ class Suggestion(Button):
         self.halign = 'center'
         self.valign = 'middle'
         self.width = dp(300)
+        self.height = dp(50)
         self.background_normal = '' 
         self.background_color = (122/255, 153/255, 215/255, 1) 
 
