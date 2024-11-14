@@ -41,9 +41,8 @@
 <Response>:
     size_hint_y: None
     height: bot.height
-    size_hint_x: 0.6
+    size_hint_x: 1
     adaptive_height:True
-    pos_hint: {'center_x': 0.3}
     MDScreen:
         md_bg_color: get_color_from_hex("#7099d7")
         radius: dp(25)
@@ -58,6 +57,21 @@
             padding: [15, 15]
             size_hint_y: None
             height: self.texture_size[1] + 2*self.padding[1]
+
+<Suggestion>:
+    background_normal: ''
+    background_down: ''
+    background_color: 0.439, 0.6, 0.843, 1  # RGB color for background
+    color: 1, 1, 1, 1  # Text color
+    font_size: 26
+    padding: 10, 5
+    canvas.before:
+        Color:
+            rgba: self.background_color  # Set button background color
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [15]  # Set radius for rounded corners (adjust value as needed)
 
 #The Whole Ass Screen Design   
 <ChatScreen>:
@@ -123,3 +137,5 @@
                 size_hint_y: None  
                 width: dp(70)
                 height: dp(38) 
+
+            
