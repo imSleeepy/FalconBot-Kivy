@@ -207,6 +207,9 @@ class ChatScreen(Screen):
     chat_area = ObjectProperty()
     message = ObjectProperty()
 
+    # List to store chat history
+    chat_history = []
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.welcome_message()
@@ -251,16 +254,30 @@ class ChatScreen(Screen):
         self.welcome_message()
         self.ids.chat_area.parent.scroll_y = 1
 
+        # Send a POST request to the reset endpoint
+        try:
+            url = "http://52.184.84.224:5000/reset_history"  # Update with your server's actual IP/URL
+            response = requests.post(url)
+            if response.status_code == 200:
+                print("Chat history reset successfully on the server.")
+            else:
+                print("Error resetting chat history on the server.")
+        except requests.exceptions.RequestException as e:
+            print(f"Error: {str(e)}")
+
     def show_user_input(self, suggestion=None):
         user_input = self.ids.message.text if not suggestion else suggestion
         
         if user_input:
             # Display the user message
             self.ids.chat_area.add_widget(User(text=user_input, font_size=17))
+            # Store the user inquiry to the history
+            self.chat_history.append({"role": "user", "message": user_input})
             self.ids.message.text = ""  # Clear the input field
-            
-            
+
             Clock.schedule_once(lambda dt: self.rule_based_response(user_input), 0.3)
+
+        Clock.schedule_once(lambda dt: self.send_chat_history_to_server(), 0.3)
 
     def rule_based_response(self, user_input):
         response = rule_based_process(user_input)
@@ -286,11 +303,15 @@ class ChatScreen(Screen):
                     self.ids.chat_area.add_widget(
                         Response(text=response["text"], font_size=17)
                     )
+                self.chat_history.append({"role": "bot", "message": response["text"]})
+
             # If response is a string, display it directly
             elif isinstance(response, str):
                 self.ids.chat_area.add_widget(
                     Response(text=response, font_size=17)
                 )
+            self.chat_history.append({"role": "bot", "message": response})
+
         else:
             # Call main bot response if no rule-based response is found
             self.process_bot_response(user_input)
@@ -303,10 +324,11 @@ class ChatScreen(Screen):
         self.ids.chat_area.add_widget(
             Response(text=bot_response, font_size=17)
         )   
+        self.chat_history.append({"role": "bot", "message": bot_response})
 
     def get_bot_response(self, user_input):
         """Send the user input to the chatbot API and get the response."""
-        url = "http://52.184.84.224:5000/get_response"  # The endpoint of your chatbot API on Azure
+        url = "http://52.184.84.224:5000/get_response"  
         try:
             response = requests.post(url, json={"query": user_input})
             if response.status_code == 200:
@@ -316,6 +338,17 @@ class ChatScreen(Screen):
         except requests.exceptions.RequestException as e:
             return f"Error: {str(e)}"
         
+    def send_chat_history_to_server(self):
+        url = "http://52.184.84.224:5000/receive_chat_history"
+        headers = {'Content-Type': 'application/json'}
+        
+        # Send chat history as JSON data
+        response = requests.post(url, json={"chat_history": self.chat_history}, headers=headers)
+        
+        if response.status_code == 200:
+            print("Chat history sent successfully.")
+        else:
+            print(f"Failed to send chat history: {response.status_code}")
 
 class ChatApp(MDApp):   
     def build(self):
