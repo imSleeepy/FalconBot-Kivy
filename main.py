@@ -29,7 +29,7 @@ class Suggestion(Button):
         self.halign = 'center'
         self.valign = 'middle'
         self.font_size = '13sp'
-        self.height = 125
+        self.height = 150
         self.background_normal = '' 
         self.background_color = (122/255, 153/255, 215/255, 1) 
 
@@ -38,10 +38,10 @@ def list_suggestions():
         "How do I enroll?",
         "What actions are considered major offenses?",
         "What are the Core Values of Adamson University?",
-        "How can students request an exemption from the uniform policy?",
+        "What are the exemptions to not follow uniform policy?",
         "When are students allowed to wear civilian clothing?",
         "What version of the Manual is used here?",
-        "What proof do I need if I missed an exam due to illness?",
+        "What proof is needed for a missed exam due to illness?",
         "What is the grading system?",
         "What is the Mission of the Adamson University?",
         "What is the pledge of conformity?",
